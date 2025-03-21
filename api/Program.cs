@@ -1,4 +1,5 @@
 using api.Data;
+using api.Endpoints;
 using api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -47,5 +48,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapAccountEndpoints();
 
 app.Run();
