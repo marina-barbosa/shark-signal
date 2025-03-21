@@ -1,6 +1,7 @@
 using System;
 using api.Common;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,14 @@ public static class AccountEndpoint
     {
         var group = app.MapGroup("/api/account").WithTags("Account");
 
-        group.MapPost("/register", async (UserManager<AppUser> userManager, [FromForm] string fullName, [FromForm] string email, [FromForm] string password, [FromForm] string userName) =>
+        group.MapPost("/register", async (
+            UserManager<AppUser> userManager, 
+            IHttpContextAccessor httpContextAccessor,
+            [FromForm] string fullName, 
+            [FromForm] string email, 
+            [FromForm] string password, 
+            [FromForm] string userName,
+            [FromForm] IFormFile? profileImage) =>
         {
             var userFromDb = await userManager.FindByEmailAsync(email);
 
@@ -21,11 +29,31 @@ public static class AccountEndpoint
                 return Results.BadRequest(Response<string>.Failure("O usuario ja esta cadastrado"));
             }
 
+            if (profileImage is null)
+            {
+                return Results.BadRequest(Response<string>.Failure("A imagem de perfil é obrigatoria"));
+            }
+
+            var picture = await FileUpload.Upload(profileImage);
+
+            // picture = $"{context.Request.Scheme}://{context.Request.Host}/uploads/{picture}";
+
+            var httpContext = httpContextAccessor.HttpContext;
+            
+            if (httpContext == null)
+            {
+                return Results.BadRequest(Response<string>.Failure("Erro ao processar a requisição"));
+            }
+
+            var baseUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}";
+            picture = $"{baseUrl}/uploads/{picture}";
+            
             var user = new AppUser
             {
                 Email = email,
                 FullName = fullName,
-                UserName = userName
+                UserName = userName,
+                ProfileImage = picture
             };
 
             var result = await userManager.CreateAsync(user, password);

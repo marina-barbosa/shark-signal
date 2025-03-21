@@ -21,3 +21,37 @@ Content-Disposition: form-data; name="userName"
 
 hortency
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+Content-Disposition: form-data; name="profileImage"; filename="avatar.jpeg"
+Content-Type: image/jpeg
+
+< C:\develop\avatar.jpeg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+### Registrar um novo usuário
+POST {{api_url}}/api/account/register
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="fullName"
+
+Dexter Fontes
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="email"
+
+dexter@gmail.com
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="password"
+
+123456Bb*
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="userName"
+
+dex
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="profileImage"; filename="avatar.jpeg"
+Content-Type: image/jpeg
+
+< C:\develop\avatar.jpeg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
