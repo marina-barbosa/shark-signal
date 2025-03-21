@@ -40,3 +40,44 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Geral
+node_modules/
+dist/
+.env
+.DS_Store
+Thumbs.db
+
+# Diretório da API (.NET 8)
+api/bin/
+api/obj/
+api/.vs/
+api/.vscode/
+api/*.user
+api/*.suo
+api/*.cache
+api/*.log
+api/.DS_Store
+api/Thumbs.db
+api/appsettings.*.json  # Ignora arquivos de configuração específicos do ambiente
+
+# Diretório do Cliente (Angular 19)
+client/node_modules/
+client/dist/
+client/.angular/
+client/.vscode/
+client/.DS_Store
+client/Thumbs.db
+
+# Logs e dependências gerais
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Sistema operacional
+*.swp
+*.swo
+*.bak
+
