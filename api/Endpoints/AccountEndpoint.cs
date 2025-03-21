@@ -1,5 +1,6 @@
 using System;
 using api.Common;
+using api.DTOs;
 using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,11 @@ public static class AccountEndpoint
         var group = app.MapGroup("/api/account").WithTags("Account");
 
         group.MapPost("/register", async (
-            UserManager<AppUser> userManager, 
+            UserManager<AppUser> userManager,
             IHttpContextAccessor httpContextAccessor,
-            [FromForm] string fullName, 
-            [FromForm] string email, 
-            [FromForm] string password, 
+            [FromForm] string fullName,
+            [FromForm] string email,
+            [FromForm] string password,
             [FromForm] string userName,
             [FromForm] IFormFile? profileImage) =>
         {
@@ -39,7 +40,7 @@ public static class AccountEndpoint
             // picture = $"{context.Request.Scheme}://{context.Request.Host}/uploads/{picture}";
 
             var httpContext = httpContextAccessor.HttpContext;
-            
+
             if (httpContext == null)
             {
                 return Results.BadRequest(Response<string>.Failure("Erro ao processar a requisição"));
@@ -47,7 +48,7 @@ public static class AccountEndpoint
 
             var baseUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}";
             picture = $"{baseUrl}/uploads/{picture}";
-            
+
             var user = new AppUser
             {
                 Email = email,
@@ -63,8 +64,37 @@ public static class AccountEndpoint
                 return Results.BadRequest(Response<string>.Failure(result.Errors.Select(x => x.Description).FirstOrDefault()!));
             }
 
-            return Results.Ok(Response<string>.Success("","Usuario criado com sucesso"));
+            return Results.Ok(Response<string>.Success("", "Usuario criado com sucesso"));
         }).DisableAntiforgery();
+
+        group.MapPost("/login", async (
+            UserManager<AppUser> userManager,
+            TokenService tokenService,
+            LoginDto dto) =>
+            {
+                if (dto is null)
+                {
+                    return Results.BadRequest(Response<string>.Failure("Erro, login invalido"));
+                }
+
+                var user = await userManager.FindByEmailAsync(dto.Email);
+
+                if (user is null)
+                {
+                    return Results.BadRequest(Response<string>.Failure("Usuario nao encontrado"));
+                }
+
+                var result = await userManager.CheckPasswordAsync(user, dto.Password);
+
+                if (!result)
+                {
+                    return Results.BadRequest(Response<string>.Failure("Senha incorreta"));
+                }
+
+                var token = tokenService.GenerateToken(user.Id, user.UserName!);
+
+                return Results.Ok(Response<string>.Success(token, "Login efetuado com sucesso"));
+            });
 
         return group;
     }
