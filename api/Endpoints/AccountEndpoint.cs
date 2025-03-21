@@ -12,7 +12,7 @@ public static class AccountEndpoint
     {
         var group = app.MapGroup("/api/account").WithTags("Account");
 
-        group.MapPost("/register", async (HttpContent context, UserManager<AppUser> userManager, [FromForm] string fullName, [FromForm] string email, [FromForm] string password) =>
+        group.MapPost("/register", async (UserManager<AppUser> userManager, [FromForm] string fullName, [FromForm] string email, [FromForm] string password, [FromForm] string userName) =>
         {
             var userFromDb = await userManager.FindByEmailAsync(email);
 
@@ -24,7 +24,8 @@ public static class AccountEndpoint
             var user = new AppUser
             {
                 Email = email,
-                FullName = fullName
+                FullName = fullName,
+                UserName = userName
             };
 
             var result = await userManager.CreateAsync(user, password);
@@ -35,10 +36,8 @@ public static class AccountEndpoint
             }
 
             return Results.Ok(Response<string>.Success("","Usuario criado com sucesso"));
-        });
+        }).DisableAntiforgery();
 
         return group;
     }
-
 }
-
