@@ -49,8 +49,12 @@ dist/
 Thumbs.db
 
 # Diretório da API (.NET 8)
-api/bin/
+api/bin
+api/bin/*
 api/obj/
+api/obj
+api/obj/*
+obj
 api/.vs/
 api/.vscode/
 api/*.user
