@@ -52,4 +52,9 @@ export class AuthService {
     // return !!localStorage.getItem(this.token);
     return !!this.getAccessToken;
   }
+
+  logout() {
+    localStorage.removeItem(this.token);
+    localStorage.removeItem('user');
+  }
 }
