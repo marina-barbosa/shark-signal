@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiResponse } from '../models/api-response';
 import { Router } from '@angular/router';
-import { AuthServiceService } from '../services/auth-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +21,7 @@ export class LoginComponent {
   password!: string;
   hide = signal(true);
 
-  private authService = inject(AuthServiceService);
+  private authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
  router = inject(Router);
 
@@ -29,6 +29,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password)
     .subscribe({
       next: () => {
+        this.authService.me().subscribe();
         this.snackBar.open('Login efetuado com sucesso', 'Close', { duration: 3000 });
       },
       error: (error:HttpErrorResponse) => {
