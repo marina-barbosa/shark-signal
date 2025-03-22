@@ -1,10 +1,12 @@
 <div class="p-4">
     <div class="flex items-center justify-between bg-white z-10 sticky top-0 p-2 border-b border-gray-200">
         <div class="flex items-center">
-            <img src="https://randomuser.me/api/portraits/women/13.jpg" alt="profile picture"
+            <img 
+            [src]="authService.currentLoggedUser?.profileImage || 'https://randomuser.me/api/portraits/lego/6.jpg'"
+             alt="profile picture"
                 class="w-10 h-10 rounded-full border-gray-100 border-2 object-cover">
             <div class="font-medium ml-2 text-gray-500">
-                Jane Doe
+                {{authService.currentLoggedUser?.fullName | titlecase}}
             </div>
         </div>
         <div>
@@ -31,7 +33,7 @@
     <div class="py-1 overflow-y-auto scroll-smooth">
         @for (item of [1,2,3,4,5,6,7,8,9]; track item){
             <div class="flex items-center gap-2 py-2">
-                <img src="https://randomuser.me/api/portraits/women/10.jpg" alt="profile picture"
+                <img src="https://randomuser.me/api/portraits/women/13.jpg" alt="profile picture"
                 class="w-10 h-10 rounded-full border-gray-100 border-2 object-cover"/>
                 <div>
                     <span class="text-base text-gray-600 font-normal">Hortency Flores</span>
