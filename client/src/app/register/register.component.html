@@ -1,8 +1,11 @@
-<form class="flex justify-center px-6 md:px-20 bg-gradient-to-r from-[#0b4263] to-[#0c4a6d] text-[#70c2e9]">
+<form 
+#userForm="ngForm"
+(ngSubmit)="register()"
+class="flex justify-center px-6 md:px-20 bg-gradient-to-r from-[#0b4263] to-[#0c4a6d] text-[#70c2e9]">
     <div class="bg-[#0b4263] border border-[#075985] my-10 rounded-lg max-w-md w-full p-6 shadow-lg">
         <div class="text-center">
             <div class="flex justify-center">
-                <img [src]="profilePicture" alt="Avatar" class="rounded-full bg-sky-800 h-24 w-24 border-2 border-sky-500">
+                <img [src]="profilePicture" alt="Avatar" class="rounded-full object-cover bg-sky-800 h-24 w-24 border-2 border-sky-500">
             </div>
             <div class="text-2xl my-2 font-semibold">Shark Signal</div>
             <p class="text-sm text-gray-300">Dive into secure messaging</p>
@@ -11,28 +14,65 @@
 
         <div class="w-full mt-4">
             <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Full Name</mat-label>
+                <mat-label>Nome Completo</mat-label>
                 <input matInput [(ngModel)]="fullName" name="fullName" placeholder="Shark Coders" />
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Email</mat-label>
-                <input matInput [(ngModel)]="email" name="email" placeholder="shark@example.com" />
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Username</mat-label>
+                <input matInput 
+                required
+                [(ngModel)]="userName" name="userName" placeholder="shark"
+                #userNameModel="ngModel" />
+
+                @if (userNameModel.errors?.['required']){
+                    <mat-error>UserName é obrigatório</mat-error>
+                }
+
             </mat-form-field>
 
-            <div class="flex justify-between text-sm text-gray-300 mt-2">
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput 
+                required
+                [(ngModel)]="email" name="email" placeholder="shark@example.com"
+                #emailModel="ngModel" />
+
+                @if (emailModel.errors?.['required']){
+                    <mat-error>Email é obrigatório</mat-error>
+                }
+
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Senha</mat-label>
+                <input matInput (click)="togglePassword($event)" [(ngModel)]="password" name="password" [type]="hide() ? 'password' : 'text'" placeholder="********" />
+                <mat-icon (click)="togglePassword($event)" matSuffix>
+                    {{ hide() ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+            </mat-form-field>
+
+            <div class="flex justify-between text-sm text-gray-300 -mt-3 mb-6">
                 <span class="cursor-pointer hover:text-gray-100">Forgot password?</span>
                 <label class="flex items-center cursor-pointer">
                     <input type="checkbox" class="mr-2"> Remember me
                 </label>
             </div>
 
-            <mat-form-field appearance="outline" class="w-full mt-3">
-                <mat-label>Password</mat-label>
-                <input matInput [(ngModel)]="password" name="password" type="password" placeholder="********" />
-            </mat-form-field>
+            <input hidden
+            (change)="onFileSelected($event)"
+            type="file" #pic placeholder="Profile Image">
+            <button mat-raised-button 
+            (click)="pic.click()"
+            type="button"
+            class="w-full flex items-center gap-2 justify-center mb-5 bg-red-900 text-white rounded-md p-2 hover:bg-red-800 transition">
+            <mat-icon>add_a_photo</mat-icon>
+        <span>Upload Profile Image</span></button>
 
-            <button mat-raised-button type="submit" class="w-full mt-4 bg-red-700 text-white rounded-md p-2 hover:bg-red-800 transition">
+            <button mat-raised-button 
+            type="submit" 
+            [disabled]="!userForm.valid"
+            class="w-full bg-red-700 text-white rounded-md p-2 hover:bg-red-800 transition disabled:opacity-90">
                 Register
             </button>
 
