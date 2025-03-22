@@ -15,6 +15,26 @@ SharkSignal is a simple yet powerful chat application built for learning and pra
 Stay connected, chat seamlessly, and explore the depths of instant messaging! 🌊⚡
 
 
+# Arquivo ChatService - Documentação
+
+### `ChatService - shark-signal/client/src/app/services/chat.service.ts`
+
+A função `startConnection` é responsável por iniciar uma conexão com um servidor SignalR para gerenciar comunicação em tempo real entre usuários do chat. Ela estabelece e mantém a conexão, garantindo a reconexão automática em caso de falha e atualizando a lista de usuários online.
+Essa função garante que os usuários possam se comunicar em tempo real e ter visibilidade sobre quem está online na aplicação.
+
+## Como funciona
+1. **Cria uma conexão SignalR** utilizando `HubConnectionBuilder`.
+2. **Define a URL do hub** e adiciona o `senderId` (se fornecido) como query string.
+3. **Adiciona um token de autenticação** através do `accessTokenFactory`.
+4. **Habilita a reconexão automática** para manter a estabilidade da conexão.
+5. **Inicia a conexão** com o servidor e exibe logs informando o status.
+6. **Ouve eventos de usuários online**, filtrando o usuário logado da lista antes de atualizar `onlineUsers`.
+
+
+
+
+
+
 
 # Arquivo ChatHub - Documentação
 
