@@ -31,14 +31,25 @@
         </mat-icon>
     </div>
     <div class="py-1 overflow-y-auto scroll-smooth">
-        @for (item of [1,2,3,4,5,6,7,8,9]; track item){
+        @for (user of chatService.onlineUsers(); track user){
             <div class="flex items-center gap-2 py-2">
-                <img src="https://randomuser.me/api/portraits/women/13.jpg" alt="profile picture"
+                <img 
+                [src]="user.profilePicture" alt="profile picture"
                 class="w-10 h-10 rounded-full border-gray-100 border-2 object-cover"/>
                 <div>
-                    <span class="text-base text-gray-600 font-normal">Hortency Flores</span>
-                    <p class="text-xs text-slate-400">3 new messages</p>
+                    <span class="text-base text-gray-600 font-normal">
+                        {{user.fullName | titlecase}}
+                    </span>
+                    <p class="text-xs text-slate-400">
+                        {{user.unreadMessageCount ? user.unreadMessageCount + ' new messages' : ''}}
+                    </p>
                 </div>
+                @if(user.isOnline){
+                    <div class="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
+                }
+                @else {
+                    <div class="ml-auto w-2 h-2 bg-gray-300 rounded-full"></div>
+                }
             </div>
         }
 
