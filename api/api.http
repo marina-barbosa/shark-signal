@@ -69,6 +69,6 @@ Content-Type: application/json
 }
 
 
-### get details of me
+### get current user details
 GET {{api_url}}/api/account/me
 Authorization: Bearer {{access_token}}
