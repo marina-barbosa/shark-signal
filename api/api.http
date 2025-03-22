@@ -1,5 +1,7 @@
 @api_url = http://localhost:5000
 
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzOGJhMGJjMy0xZmYwLTQzMTgtYjMyYy04OWE5N2RhZTY3MjQiLCJ1bmlxdWVfbmFtZSI6ImhvcnRlbmN5IiwibmJmIjoxNzQyNjEzNjExLCJleHAiOjE3NDI3MDAwMTEsImlhdCI6MTc0MjYxMzYxMX0.er_XqVOdnvpER8tmxypclGcXC67zvP9JL2rMGOIHWC8
+
 ### Registrar um novo usuário
 POST {{api_url}}/api/account/register
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -65,3 +67,8 @@ Content-Type: application/json
   "email": "hortency@gmail.com",
   "password": "123456Bb*"
 }
+
+
+### get details of me
+GET {{api_url}}/api/account/me
+Authorization: Bearer {{access_token}}
