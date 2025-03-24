@@ -6,7 +6,7 @@ import { TitleCasePipe } from '@angular/common';
   selector: 'app-chat-right-side',
   imports: [TitleCasePipe],
   templateUrl: './chat-right-side.component.html',
-  styleUrl: './chat-right-side.component.css'
+  styles: ``
 })
 export class ChatRightSideComponent {
   chatService = inject(ChatService);

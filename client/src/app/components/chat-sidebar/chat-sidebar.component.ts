@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { ChatService } from '../../services/chat.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -25,5 +26,9 @@ router = inject(Router);
 
   ngOnInit(): void {
     this.chatService.startConnection(this.authService.getAccessToken!);
+  }
+
+  openChatWindow(user: User) {
+    this.chatService.currentOpenedChat.set(user);
   }
 }

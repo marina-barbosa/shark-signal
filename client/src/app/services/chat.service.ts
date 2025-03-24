@@ -10,7 +10,7 @@ export class ChatService {
   private authService = inject(AuthService);
   private hubUrl = 'http://localhost:5000/hubs/chat';
   onlineUsers = signal<User[]>([]);
-  currentOpenedChat = signal<User | null>({} as User);
+  currentOpenedChat = signal<User | null>(null);
 
   private hubConnection?: HubConnection;
 
