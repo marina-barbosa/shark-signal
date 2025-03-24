@@ -20,6 +20,7 @@ router = inject(Router);
   logout(){
     this.authService.logout();
     this.router.navigate(['login']);
+    this.chatService.disconnectConnection();
   }
 
   ngOnInit(): void {
