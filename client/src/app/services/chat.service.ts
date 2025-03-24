@@ -15,6 +15,7 @@ export class ChatService {
   chatMessages = signal<Message[]>([]);
   isLoading = signal<boolean>(true);
   private hubConnection?: HubConnection;
+  autoScrollEnabled = signal<boolean>(true);
 
   startConnection(token: string, senderId?: string) {
     this.hubConnection = new HubConnectionBuilder()
@@ -74,6 +75,7 @@ export class ChatService {
     
 
     this.hubConnection!.on('ReceiveMessageList', (message) => {
+      this.isLoading.update(() => true);
       this.chatMessages.update((messages) => [...message, messages]);
       this.isLoading.update(() => false);
       console.log('Mensagens no estado:', this.chatMessages());
@@ -126,6 +128,7 @@ export class ChatService {
   }
 
   loadMessages(pageNumber: number) {
+    this.isLoading.update(() => true);
     this.hubConnection?.invoke('LoadMessages', this.currentOpenedChat()?.id, pageNumber)
     .then().catch().finally(() => this.isLoading.update(() => false));
   }
