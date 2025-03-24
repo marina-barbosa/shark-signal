@@ -9,14 +9,17 @@ import { ChatBoxComponent } from "../chat-box/chat-box.component";
   selector: 'app-chat-window',
   imports: [TitleCasePipe, MatIconModule, FormsModule, ChatBoxComponent],
   templateUrl: './chat-window.component.html',
-  styles: ``
+  styles: `
+
+  `
 })
 export class ChatWindowComponent {
   chatService = inject(ChatService);
   message: string = '';
 
   sendMessage() {
-    
+    if(!this.message) return;
+    this.chatService.sendMessage(this.message);
     this.message = '';
   }
 }

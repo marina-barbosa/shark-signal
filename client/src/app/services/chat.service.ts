@@ -44,12 +44,37 @@ export class ChatService {
       this.isLoading.update(() => false);
       console.log('Mensagens no estado:', this.chatMessages());
     });
+
+    this.hubConnection!.on('ReceiveNewMessage', (message:Message) => {
+      document.title = '(1) New Message';
+      this.chatMessages.update(messages=>[...messages, message]);
+    })
   }
 
   disconnectConnection() {
     if (this.hubConnection?.state === HubConnectionState.Connected) {
       this.hubConnection.stop().catch(error => console.log(error));
     }
+  }
+
+  sendMessage(message:string){
+    this.chatMessages.update((messages)=>[
+      ...messages,
+      {
+        content: message,
+        senderId:this.authService.currentLoggedUser!.id,
+        receiverId: this.currentOpenedChat()!.id,
+        createdDate: new Date().toString(),
+        isRead: false,
+        id: 0
+      }
+    ]);
+    this.hubConnection?.invoke('SendMessage', {
+      receiverId: this.currentOpenedChat()?.id,
+      content:message
+    }).then(id=>{
+      console.log('message send to', id);
+    }).catch(error => console.log(error));
   }
 
   status(userName: string) {
