@@ -27,7 +27,18 @@ export class ChatService {
     this.hubConnection
       .start()
       .then(() => console.log('Connection started'))
-      .catch((err) => console.log('Error while starting connection: ' + err));
+      .catch((err) => console.log('Connection or login error: ' + err));
+
+    this.hubConnection!.on('Notify', (user:User)=>{
+      Notification.requestPermission().then(result => {
+        if(result === 'granted'){
+          new Notification('Ative now 🦈', {
+            body: `${user.fullName} is online now`,
+            icon: user.profileImage,
+          })
+        }
+      })
+    })
 
     this.hubConnection.on('OnlineUsers', (user: User[]) => {
       console.log(user);
