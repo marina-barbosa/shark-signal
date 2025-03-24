@@ -18,6 +18,17 @@ export class ChatService {
   autoScrollEnabled = signal<boolean>(true);
 
   startConnection(token: string, senderId?: string) {
+    if(this.hubConnection?.state === HubConnectionState.Connected) return;
+
+    if(this.hubConnection)
+    {
+      this.hubConnection.off('ReceiveNewMessage');
+      this.hubConnection.off('ReceiveNewMessageList');
+      this.hubConnection.off('OnlineUsers');
+      this.hubConnection.off('NotifyTypingToUser');
+      this.hubConnection.off('Notify');
+    }
+
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(`${this.hubUrl}?senderId=${senderId || ''}`, {
         accessTokenFactory: () => token,
@@ -82,6 +93,8 @@ export class ChatService {
     });
 
     this.hubConnection!.on('ReceiveNewMessage', (message:Message) => {
+      let audio = new Audio('assets/sound-radar-notification.mp3');
+      audio.play();
       document.title = '(1) New Message';
       this.chatMessages.update(messages=>[...messages, message]);
     })
