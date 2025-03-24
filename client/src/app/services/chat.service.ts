@@ -50,6 +50,29 @@ export class ChatService {
       );
     });
 
+    this.hubConnection!.on('NotifyTypingToUser', (senderUserName) => {
+      this.onlineUsers.update(users => {
+        return users.map(user => {
+          if (user.userName === senderUserName) {
+            user.isTyping = true;
+          }
+          return user;
+        })
+      });
+      setTimeout(()=>{
+        this.onlineUsers.update(users => {
+          return users.map(user => {
+            if(user.userName === senderUserName){
+              user.isTyping = false;
+            }
+            return user;
+          })
+        })
+      }, 2000)
+    });
+
+    
+
     this.hubConnection!.on('ReceiveMessageList', (message) => {
       this.chatMessages.update((messages) => [...message, messages]);
       this.isLoading.update(() => false);
@@ -105,5 +128,11 @@ export class ChatService {
   loadMessages(pageNumber: number) {
     this.hubConnection?.invoke('LoadMessages', this.currentOpenedChat()?.id, pageNumber)
     .then().catch().finally(() => this.isLoading.update(() => false));
+  }
+
+  notifyTyping() {
+    this.hubConnection!.invoke('NotifyTyping', this.currentOpenedChat()?.userName)
+    .then(x=>console.log('notify for', x))
+    .catch(error => console.log(error));
   }
 }

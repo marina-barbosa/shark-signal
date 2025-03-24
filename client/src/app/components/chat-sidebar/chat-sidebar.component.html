@@ -45,6 +45,9 @@
                     <p class="text-xs text-slate-400">
                         {{user.unreadMessageCount ? user.unreadMessageCount + ' new messages' : ''}}
                     </p>
+                    @if(user!.isTyping){
+                        <app-typing-indicator/>
+                    }
                 </div>
                 @if(user.isOnline){
                     <div class="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
