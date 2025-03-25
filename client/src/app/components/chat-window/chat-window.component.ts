@@ -6,14 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { ChatBoxComponent } from "../chat-box/chat-box.component";
 import { VideoChatService } from '../../services/video-chat.service';
 import { MatDialog } from '@angular/material/dialog';
+import { VideoChatComponent } from '../../video-chat/video-chat.component';
 
 @Component({
   selector: 'app-chat-window',
   imports: [TitleCasePipe, MatIconModule, FormsModule, ChatBoxComponent],
   templateUrl: './chat-window.component.html',
-  styles: `
-
-  `
+  styles: '',
 })
 export class ChatWindowComponent {
   @ViewChild('chatBox') chatContainer?: ElementRef
@@ -32,7 +31,7 @@ export class ChatWindowComponent {
 
   displayDialog(receiverId: string){
     this.signalRService.remoteUserId = receiverId;
-    this.dialog.open(VideoChatService, {
+    this.dialog.open(VideoChatComponent, {
       width: '400px',
       height: '600px',
       disableClose: true,
