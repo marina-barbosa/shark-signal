@@ -165,3 +165,5 @@ Essas funções trabalham em conjunto para fornecer uma experiência de chat em 
 
 Essa documentação cobre as principais funcionalidades do **ChatHub**. Para mais detalhes, consulte o código-fonte ou a documentação oficial do **SignalR**.
 
+
+Fonte: https://www.youtube.com/watch?v=t9ka1O5_dxk
